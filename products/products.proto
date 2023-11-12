@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package rpc;
+option go_package = "./products";  //настройка для Go
+
+// Определение сервиса для обработки товаров
+service Products {
+    // Метод для получения товара
+    rpc GetProduct(GetProductReq) returns (GetProductResp) {}
+    // Метод для получения списка товаров
+    rpc GetProducts(GetProductsReq) returns (stream Product) {}
+    //  Метод для создания товаров
+    rpc CreateProducts(stream Product) returns (CreateProductsResp) {}
+    // Метод для создания товаров
+    rpc CreateProductsInStream(stream Product) returns (stream Product) {}
+}
+
+// Описание типов запросов и ответов для методов сервиса обработки товаров
+message Product {
+    uint32 id = 1;
+    string name = 2;
+    float price = 3;
+}
+
+message GetProductReq {
+    uint32 id = 1;
+}
+
+message GetProductResp {
+    Product product = 1;
+}
+
+message GetProductsReq {
+    string search = 1;
+    uint32 limit = 2;
+}
+
+message CreateProductsResp {
+    repeated Product products = 1;
+}
